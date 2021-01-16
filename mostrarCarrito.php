@@ -46,6 +46,24 @@ include 'templates/cabecera.php';
              <td align="right"><h3>$<?php echo number_format($total,2);?></h3></td>
              <td></td>
          </tr>
+         <tr>
+            <td colspan="5">
+                <form action="pagar.php" method="post">
+                    <div class="alert alert-success">
+                        <div class="form-group">
+                            <label for="my-input">Correo de contacto</label>
+                            <input id="email" class="form-control" type="email" name="email" placeholder="Escriba su correo" required>
+                        </div>
+                        <small id="emailHelp" class="form-text text-muted">
+                        Los procesos se enviarán a este correo :)
+                        </small>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" value="proceder" name="btnAccion">
+                        Proceder a pagar >>
+                    </button>
+                </form>
+            </td>
+         </tr>
      </tbody>
  </table>
  <?php }else{ ?>
