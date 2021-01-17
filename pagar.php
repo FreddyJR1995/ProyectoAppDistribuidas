@@ -35,56 +35,58 @@ if ($_POST){
     }
 }
 ?>
-<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
-
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <div class="jumbotron text-center">
     <h1 class="display-4">¡Paso Final!</h1>
     <hr class="my-4">
     <p class="lead">Estas a punto de pagar con PayPal la cantidad de:
         <h4>$<?php echo number_format($total, 2); ?></h4>
-        <div id="smart-button-container">
-            <div style="text-align: center;">
-                <div id="paypal-button-container"></div>
-            </div>
-        </div>
+        <div id="paypal-button"></div>
     </p>
     <p>Los productos podrán ser descargados una vez que se procese el pago<br/>
         <strong>(Para aclaraciones :app_distribuidas@gmail.com)</strong>
     </p>
 </div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-<script>paypal.Buttons().render('body');</script>
-
 <script>
-function initPayPalButton() {
-    paypal.Buttons({
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'AVqEp2apcdJbJo2yOuQqo2_TYMS4pSJKTQ4XClMw1g1xlz3j8kxLfpNcwGXtNK26p1khAQ_vG3y7lZn2',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'es_EC',
     style: {
-        shape: 'rect',
-        color: 'gold',
-        layout: 'vertical',
-        label: 'paypal',
-        
+      size: 'responsive',
+      color: 'gold',
+      shape: 'pill',
     },
 
-    createOrder: function(data, actions) {
-        return actions.order.create({
-        purchase_units: [{"amount":{"currency_code":"USD","value":1}}]
-        });
-    },
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
 
-    onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-        alert('Transaction completed by ' + details.payer.name.given_name + '!');
-        });
+    // Set up a payment
+    payment: function(data, actions) {
+      return actions.payment.create({
+        transactions: [{
+          amount: {
+            total: '<?php echo $total;?>',
+            currency: 'USD'
+          }
+        }]
+      });
     },
-
-    onError: function(err) {
-        console.log(err);
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function() {
+        // Show a confirmation message to the buyer
+        window.alert('Thank you for your purchase!');
+      });
     }
-    }).render('#paypal-button-container');
-}
-initPayPalButton();
+  }, '#paypal-button');
+
 </script>
 
 <?php
