@@ -8,4 +8,6 @@ define("USUARIO","root");
 define("PASSWORD","");
 define("BD","tienda");
 
+define("DESCARGAS_PERMITIDAS", "1");
+
 ?>

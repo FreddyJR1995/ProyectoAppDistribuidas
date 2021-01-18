@@ -54,7 +54,7 @@ if ($_POST){
     env: 'sandbox',
     client: {
       sandbox: 'AVqEp2apcdJbJo2yOuQqo2_TYMS4pSJKTQ4XClMw1g1xlz3j8kxLfpNcwGXtNK26p1khAQ_vG3y7lZn2',
-      production: 'demo_production_client_id'
+      production: 'AcHIaATMy5sESWZl68hsQJYubpHAh0I2TjAXWRlZF0QvTxu863d3rRGR1VtkkBCG7zFl6xrQmYX1NkdM'
     },
     // Customize button (optional)
     locale: 'es_EC',
@@ -74,7 +74,9 @@ if ($_POST){
           amount: {
             total: '<?php echo $total;?>',
             currency: 'USD'
-          }
+          },
+            description: "Compra de productos Vision GM:$<?php echo number_format($total, 2);?>",
+            custom: "<?php echo $S_ID;?>#<?php echo openssl_encrypt($idVenta, COD, KEY);?>"
         }]
       });
     },
@@ -82,7 +84,8 @@ if ($_POST){
     onAuthorize: function(data, actions) {
       return actions.payment.execute().then(function() {
         // Show a confirmation message to the buyer
-        window.alert('Thank you for your purchase!');
+        console.log(data);
+        window.location = "verificador.php?paymentToken=" + data.paymentToken + "&paymentID=" + data.paymentID;
       });
     }
   }, '#paypal-button');
